@@ -1,0 +1,131 @@
+#pragma once
+
+#ifndef VALUECOMP_H
+#define VALUECOMP_H
+
+typedef unsigned char u_char;
+typedef unsigned short u_short;
+typedef unsigned short u_int16;
+typedef unsigned long u_long;
+typedef short int int16;
+
+#define PF_TABLE_BITS 12
+#define PF_TABLE_SZ_16 4096
+#define PF_DEEP_COLOR_AWARE 1
+
+#include "AEConfig.h"
+
+#ifdef AE_OS_WIN
+typedef unsigned short PixelType;
+#include <Windows.h>
+#endif
+
+#include "entry.h"
+#include "AE_Effect.h"
+#include "AE_EffectCB.h"
+#include "AE_Macros.h"
+#include "Param_Utils.h"
+#include "AE_EffectCBSuites.h"
+#include "String_Utils.h"
+#include "AE_GeneralPlug.h"
+#include "AEFX_ChannelDepthTpl.h"
+#include "AEGP_SuiteHandler.h"
+
+#include "ValueComp_Strings.h"
+#include "ValueComp_CUDA.cuh"
+
+#define MAJOR_VERSION 1
+#define MINOR_VERSION 0
+#define BUG_VERSION 0
+#define STAGE_VERSION PF_Stage_DEVELOP
+#define BUILD_VERSION 2
+
+#define VALUECOMP_COMPRESSION_MIN 0.0
+#define VALUECOMP_COMPRESSION_MAX 100.0
+#define VALUECOMP_COMPRESSION_DFLT 65.0
+
+#define VALUECOMP_GROUP_RANGE_MIN 1.0
+#define VALUECOMP_GROUP_RANGE_MAX 100.0
+#define VALUECOMP_GROUP_RANGE_DFLT 12.0
+
+#define VALUECOMP_SOFTNESS_MIN 0.0
+#define VALUECOMP_SOFTNESS_MAX 100.0
+#define VALUECOMP_SOFTNESS_DFLT 35.0
+
+#define VALUECOMP_CHROMA_INFLUENCE_MIN 0.0
+#define VALUECOMP_CHROMA_INFLUENCE_MAX 100.0
+#define VALUECOMP_CHROMA_INFLUENCE_DFLT 25.0
+
+#define VALUECOMP_COLOR_AMOUNT_MIN 0.0
+#define VALUECOMP_COLOR_AMOUNT_MAX 100.0
+#define VALUECOMP_COLOR_AMOUNT_DFLT 0.0
+
+#define VALUECOMP_SHADOW_HUE_DFLT 285.0
+#define VALUECOMP_HIGHLIGHT_HUE_DFLT 65.0
+
+#define VALUECOMP_CHROMA_LIFT_MIN 0.0
+#define VALUECOMP_CHROMA_LIFT_MAX 100.0
+#define VALUECOMP_CHROMA_LIFT_DFLT 25.0
+
+#define VALUECOMP_COLOR_BALANCE_MIN 5.0
+#define VALUECOMP_COLOR_BALANCE_MAX 95.0
+#define VALUECOMP_COLOR_BALANCE_DFLT 50.0
+
+#define VALUECOMP_COLOR_NOTES_MIN 0.0
+#define VALUECOMP_COLOR_NOTES_MAX 100.0
+#define VALUECOMP_COLOR_NOTES_DFLT 0.0
+
+#define VALUECOMP_NOTES_SCALE_MIN 16.0
+#define VALUECOMP_NOTES_SCALE_MAX 1000.0
+#define VALUECOMP_NOTES_SCALE_DFLT 180.0
+
+enum {
+    VALUECOMP_INPUT = 0,
+    VALUECOMP_COMPRESSION,
+    VALUECOMP_GROUP_RANGE,
+    VALUECOMP_SOFTNESS,
+    VALUECOMP_CHROMA_INFLUENCE,
+    VALUECOMP_VIEW,
+    VALUECOMP_HIDDEN_COLOR_START,
+    VALUECOMP_COLOR_AMOUNT,
+    VALUECOMP_SHADOW_HUE,
+    VALUECOMP_HIGHLIGHT_HUE,
+    VALUECOMP_CHROMA_LIFT,
+    VALUECOMP_COLOR_BALANCE,
+    VALUECOMP_COLOR_NOTES,
+    VALUECOMP_NOTES_SCALE,
+    VALUECOMP_HIDDEN_COLOR_END,
+    VALUECOMP_NUM_PARAMS
+};
+
+enum {
+    COMPRESSION_DISK_ID = 1,
+    GROUP_RANGE_DISK_ID,
+    SOFTNESS_DISK_ID,
+    CHROMA_INFLUENCE_DISK_ID,
+    VIEW_DISK_ID,
+    HIDDEN_COLOR_START_DISK_ID,
+    COLOR_AMOUNT_DISK_ID,
+    SHADOW_HUE_DISK_ID,
+    HIGHLIGHT_HUE_DISK_ID,
+    CHROMA_LIFT_DISK_ID,
+    COLOR_BALANCE_DISK_ID,
+    COLOR_NOTES_DISK_ID,
+    NOTES_SCALE_DISK_ID,
+    HIDDEN_COLOR_END_DISK_ID
+};
+
+extern "C" {
+
+DllExport
+PF_Err EffectMain(
+    PF_Cmd cmd,
+    PF_InData* in_data,
+    PF_OutData* out_data,
+    PF_ParamDef* params[],
+    PF_LayerDef* output,
+    void* extra);
+
+}
+
+#endif
